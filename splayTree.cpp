@@ -11,9 +11,14 @@ typedef struct Nodo {
 
 class SplayTree {
     private: // Campos y metodos privados del splayTree
-        Nodo *root;
+        Nodo *root; // Raiz del splayTree
 
     void rotacion_derecha(Nodo *y) { // Rotacion hacia la derecha, con y padre de x
+        if(y->izq == nullptr) { // Caso intento de rotar en una hoja
+            cout << "No se puede realizar una rotacion a una hoja" << "\n";
+            return;
+        }
+
         Nodo *x = y->izq; // x, hijo izq de y
         
         // Actualizamos al padre de y, el cual ahora tendra como uno de sus hijos a x
@@ -38,7 +43,12 @@ class SplayTree {
     }
 
     void rotacion_izquierda(Nodo *y) { // Rotacion hacia la izquierda
-        Nodo *x = y->padre; // Padre de x
+        if(y->der == nullptr) { // Caso intento de rotar en una hoja
+            cout << "No se puede realizar una rotacion a una hoja" << "\n";
+            return;
+        }
+        
+        Nodo *x = y->der; // x, hijo derecho de y
 
         // Actualizamos al padre de y, el cual ahora tendra como uno de sus hijos a x
         if(y->padre == nullptr) { // Caso en que y es la raiz
@@ -68,10 +78,11 @@ class SplayTree {
         SplayTree() { // Constructor
             root = nullptr;
         }
-    void insert(int value) {
+    void insert(int valor) {
+        
         ; // Implementation
     }
-    void search(int value) {
+    void search(int valor) {
         ; // Implementation
     }
 };
