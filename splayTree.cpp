@@ -3,65 +3,65 @@
 using namespace std;
 
 typedef struct Nodo {
-    int data; // Donde se almacena el valor
-    Node *parent; // Puntero a nodo padre
-    Node *left; // Puntero a nodo del hijo izquierdo
-    Node *right; // Puntero a nodo del hijo derecho
-} Node;
+    int info; // Donde se almacena el valor
+    Nodo *padre; // Puntero a nodo padre
+    Nodo *izq; // Puntero a nodo del hijo izquierdo
+    Nodo *der; // Puntero a nodo del hijo derecho
+} Nodo;
 
 class SplayTree {
     private: // Campos y metodos privados del splayTree
-        Node *root;
+        Nodo *root;
 
-    void zigzag(Node *x) { // x es hijo derecho de un nodo y, luego tal nodo y es hijo izquierdo de un nodo z
-        Node *y = x->parent; // Padre
-        Node *z = y->parent; // Abuelo
-        Node *B = x->left; // Hijo izq de x
-        Node *C = x->right; // Hijo der de x
-        x->left = y; // Asignamos los hijos nuevos de x
-        x->right = z; 
-        y->right = B; // El nuevo hijo derecho de y es ahora B
-        z->left = C; // El hijo izquierdo de z es ahora C
-        y->parent = x; // El padre de y es ahora x
-        if(z->parent == root) { // Puede ser que z haya sido la raiz
-            x->parent = nullptr; // Padre de x es nulo
-            root = x; // x es ahora la raiz
-        } else { // Caso en que z no es la raiz
-            x->parent = z->parent; // Padre de x es ahora el padre de z
-        }
-        z->parent = x; // Padre de z es x
-    }
-    void zagzig(Node *x) { // x es hijo izquierdo de un nodo y, luego tal nodo y es hijo derecho de un nodo z
-        Node *y = x->parent; // Padre
-        Node *z = y->parent; // Abuelo
+    void rotacion_derecha(Nodo *y) { // Rotacion hacia la derecha, con y padre de x
+        Nodo *x = y->izq; // x, hijo izq de y
         
-    }
-    void zigzig(Node *x) { // x es hijo izquierdo de un nodo y, luego tal nodo y es tambien hijo izquierdo de un nodo z
-        Node *y = x->parent; // Padre
-        Node *z = y->parent; // Abuelo
-    }   
-    void zagzag(Node *x) { // x es hijo derecho de un nodo y, luego tal nodo y es tambien hijo derecho de un nodo z
-        Node *y = x->parent; // Padre
-        Node *z = y->parent; // Abuelo
-    }
-    void zig(Node *x) { // Caso que root sea hijo izq de la raiz
-        Node *y = x->parent; // Padre de x
-        y->left = x->right; // Hijo izq de y ahora es el hijo derecho de x
-        x->right = y; // Hijo derecho de x es ahora y
-        y->parent = x; // Padre de y ahora es x
-        x->parent = nullptr; // x es ahora la raiz, no tiene padre
-        root = x;
-    }
-    void zag(Node *x) { // Caso root es hijo derecho de la raiz
-        Node *y = x->parent; // Padre de x
-        y->right = x->left; // hijo izquierdo original de x es el hijo derecho de y
-        x->left = y; // Hijo izq de x es ahora y
-        y->parent = x; // Padre de y es ahora x
-        x->parent = nullptr; // x es ahora la raiz, no tiene padre
-        root = x;
+        // Actualizamos al padre de y, el cual ahora tendra como uno de sus hijos a x
+        if(y->padre == nullptr) { // Caso en que y es la raiz
+            root = x;
+        } else if(y->padre->izq == y) { // y es hijo izquierdo de un nodo
+            y->padre->izq = x;
+        } else { // y es hijo derecho de un nodo
+            y->padre->der = x;
+        }
+
+        // El hijo derecho de x ahora sera el hijo izquierdo de y
+        if(x->der != nullptr) {
+            x->der->padre = y;
+        }
+
+        // Actualizamos x e y
+        y->izq = x->der; // Hijo izquierdo de y es el hijo derecho de x
+        x->padre = y->padre; // El padre de x es ahora el padre de y
+        y->padre = x; // y ahora tiene como padre a x
+        x->der = y; // hijo derecho de x es ahora y
     }
 
-    void splay(Node *x) {
+    void rotacion_izquierda(Nodo *y) { // Rotacion hacia la izquierda
+        Nodo *x = y->padre; // Padre de x
+
+        // Actualizamos al padre de y, el cual ahora tendra como uno de sus hijos a x
+        if(y->padre == nullptr) { // Caso en que y es la raiz
+            root = x;
+        } else if(y->padre->izq == y) { // y es hijo izquierdo de un nodo
+            y->padre->izq = x;
+        } else { // y es hijo derecho de un nodo
+            y->padre->der = x;
+        }
+
+        // El hijo izquierdo de x ahora sera el hijo derecho de y
+        if(x->izq != nullptr) {
+            x->izq->padre = y;
+        }
+
+        // Actualizamos x e y
+        y->der = x->izq; // Hijo derecho de y es el hijo izquierdo de x
+        x->padre = y->padre; // El padre de x es ahora el padre de y
+        y->padre = x; // y ahora tiene como padre a x
+        x->izq = y; // hijo izquierdo de x es ahora y
+    }
+
+    void splay(Nodo *x) {
         ; // Implementation
     }
     public: // Campos y metodos publicos del splayTree
