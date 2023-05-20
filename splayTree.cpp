@@ -79,7 +79,7 @@ class SplayTree {
             root = nullptr;
         }
     
-    void insert(int valor) {
+    void insert(int valor) { // Metodo para insertar un nuevo valor a un splayTree, tal valor no debe ya existir en el splayTree
         Nodo *nuevoNodo = new Nodo; // Inicializamos el nuevo nodo a insertar
         nuevoNodo->info = valor;
         nuevoNodo->der = nullptr; // puntero nulo
@@ -119,8 +119,26 @@ class SplayTree {
         // Hacemos splay del nuevo nodo (lo dejamos en la raiz)
         splay(nuevoNodo);
     }
-    void search(int valor) {
-        ; // Implementation
+    Nodo *search(int valor) { // Funcion para buscar un elemento en el splayTree
+        if(this->root == nullptr) { // Arbol vacio, no esta el elemento
+            return nullptr;
+        }
+        Nodo *actual = this->root; // Obtenemos la raiz
+        Nodo *father = nullptr;
+        while(actual != nullptr) { // Iteramos hasta llegar a una hoja o encontrar el valor
+            father = actual; // Actualizamos el valor del padre
+            if(actual->info < valor) { // Nos vamos por el hijo derecho
+                actual = actual->der;
+            } else if(actual->info > valor) { // Nos vamos por el hijo izquierdo
+                actual = actual->izq;
+            } else { // Encontramos al valor
+                splay(actual); // Hacemos splay de tal valor
+                return actual;;
+            }
+        }
+        // Si terminamos la iteracion y no encontramos el valor, estamos en una hoja. Debemos hacer splay del ultimo nodo visitado (father)
+        splay(father);
+        return nullptr;
     }
 };
 
