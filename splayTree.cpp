@@ -11,7 +11,7 @@ typedef struct Nodo {
 
 class SplayTree {
     private: // Campos y metodos privados del splayTree
-        Nodo *root; // Raiz del splayTree
+        //Nodo *root; // Raiz del splayTree
 
     void rotacion_derecha(Nodo *y) { // Rotacion hacia la derecha, con y padre de x
         if(y->izq == nullptr) { // Caso intento de rotar en una hoja
@@ -100,6 +100,9 @@ class SplayTree {
     }
 
     public: // Campos y metodos publicos del splayTree
+
+        Nodo *root;
+
         SplayTree() { // Constructor
             root = nullptr;
         }
@@ -168,3 +171,28 @@ class SplayTree {
     }
 };
 
+int main() {
+    SplayTree t;
+    t.insert(1);
+    cout << t.root->info << endl;
+    t.insert(3);
+    cout << t.root->info << endl;
+    t.insert(2);
+    cout << t.root->info << endl;
+    t.insert(4);
+    cout << t.root->info << endl;
+    t.insert(5);
+    cout << t.root->info << endl;
+    t.insert(6);
+    cout << t.root->info << endl;
+    t.insert(7);
+    cout << t.root->info << endl;
+    t.insert(8);
+    cout << t.root->info << endl;
+    t.insert(9);
+    cout << t.root->info << endl;
+    t.search(3);
+    cout << t.root->info << endl;
+    t.search(7);
+    cout << t.root->info << endl;
+}
