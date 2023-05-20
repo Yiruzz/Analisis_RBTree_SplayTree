@@ -87,8 +87,41 @@ class RBTree { // Clase que representa a los arboles rojo-negro
             x->izq = y; // hijo izquierdo de x es ahora y
         }
 
-        void balancear(NodoRB *x) { // Metodo que se encargara de balancear el arbol tras una insercion
-            ; // Implementation 
+        void balancear(NodoRB *x) { // Metodo que se encargara de balancear el arbol tras una insercion      
+            while(x->padre->color == ROJO) { // Solo necesitamos hacer cambios cuando el padre es ROJO
+                NodoRB *tio = (x->padre == x->padre->padre->izq) ? x->padre->padre->der : x->padre->padre->izq;
+                if(tio->color == ROJO) { // Caso en que el tio es ROJO, cambiamos color al padre, tio y abuelo. Luego checkeamos al abuelo
+                    x->padre->color = NEGRO;
+                    tio->color = NEGRO;
+                    if(x->padre->padre == this->root) { // La raiz no debemos cambiarla nunca a color rojo, en caso de que el abuelo se la raiz tras el cmabio de color se termina
+                        return;
+                    } 
+                    x->padre->padre->color = ROJO; 
+                    x = x->padre->padre; // Ahora el abuelo puede estar violando el invariante, se debe checkear denuevo    
+                } else { // Caso en que el tio es NEGRO
+                    // Tenemos varios casos segun estemos en un zigzig, zagzag, zigzag o zagzig
+                    if(x == x->padre->padre->izq->izq) { // Caso zigzig, se rota a la derecha en el abuelo y el padre con el abuelo cambian sus colores
+
+                        x->padre->padre->color = ROJO;
+                        x->padre->color = NEGRO;
+                        rotacion_derecha(x->padre->padre);
+                    } else if(x == x->padre->padre->der->der) { // Caso zagzag, simetrico a zigzig
+                        x->padre->padre->color = ROJO;
+                        x->padre->color = NEGRO;
+                        rotacion_izquierda(x->padre->padre);
+                    } else if(x == x->padre->padre->izq->der) { // Caso zigzag
+                        rotacion_izquierda(x->padre); // Tras esta rotacion, quedamos en el caso zigzig
+                        x->color = NEGRO;
+                        x->padre->color = ROJO;
+                        rotacion_derecha(x->padre); // Tras rotar a la izquierda, ahora soy el nodo del medio del zigzig
+                    } else { // Caso zagzig, simetrico a zigzag
+                        rotacion_derecha(x->padre);
+                        x->color = NEGRO;
+                        x->padre->color = ROJO;
+                        rotacion_izquierda(x->padre);
+                    }
+                }
+            }
         }
 
     public: //
@@ -100,7 +133,47 @@ class RBTree { // Clase que representa a los arboles rojo-negro
 
         
         void insert(int valor) { // Inserta un elemento en el arbol, se deben seguir cumpliendo los invariantes tras una insercion exitosa
-            ; // Implementation
+            NodoRB *nuevoNodo = new NodoRB; // Inicializamos un nuevo nodo
+            nuevoNodo->der = nullptr; // Sus hijos seran nulos inicialmente
+            nuevoNodo->izq = nullptr;
+            nuevoNodo->info = valor;
+            nuevoNodo->color = ROJO; // Los nuevos nodos tendran siempre color rojo, en caso de que necesitemos que sea negro se cambiara luego
+            if(this->root == nullptr) { // Caso arbol vacio, insertamos en la raiz
+                nuevoNodo->color = NEGRO;
+                nuevoNodo->padre = nullptr;
+                this->root = nuevoNodo;
+                return;
+            }
+            // Insertamos en una hoja
+            NodoRB *actual = this->root; // El nodo que estaremos actualizando
+            NodoRB *father = nullptr; // El padre de tal nodo, asi cuando llegamos a una hoja, no perdemos la informacion del padre de tal hoja
+            while(actual != nullptr) { // Iteramos hasta llegar a una hoja
+                father = actual; // Actualizamos el valor del padre
+                if(actual->info < valor) { // Nos vamos por el hijo derecho
+                    actual = actual->der;
+                } else if(actual->info > valor) { // Nos vamos por el hijo izquierdo
+                    actual = actual->izq;
+                } else { // Insertamos valor ya existente ?
+                    cout << "Intento de insercion de valor repetido, no se inserta nada" << "\n";
+                    delete nuevoNodo;
+                    return;
+                }
+            }
+
+            // Ahora actual es una hoja y father es su padre
+            nuevoNodo->padre = father;
+            if(father->info < valor) { // Somos hijo derecho
+                father->der = nuevoNodo;
+            } else if(father->info > valor) { // Somos hijo izquierdo
+                father->izq = nuevoNodo;
+            } else { // Insertamos valor ya existente ?
+                cout << "Intento de insercion de valor repetido" << "\n";
+                delete nuevoNodo;
+                return;
+            }
+
+            // Finalmente balanceamos el arbol para que siga cumpliendo los invariantes
+            balancear(nuevoNodo);
         }
 
         NodoRB *search(int valor) { // Busca un elemento en el arbol
