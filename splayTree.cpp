@@ -149,11 +149,13 @@ class SplayTree {
         splay(nuevoNodo);
     }
     Nodo *search(int valor) { // Funcion para buscar un elemento en el splayTree
-        if(this->root == nullptr) { // Arbol vacio, no esta el elemento
+        if(this->root == nullptr) // Arbol vacio, no esta el elemento
             return nullptr;
-        }
+
+
         Nodo *actual = this->root; // Obtenemos la raiz
         Nodo *father = nullptr;
+
         while(actual != nullptr) { // Iteramos hasta llegar a una hoja o encontrar el valor
             father = actual; // Actualizamos el valor del padre
             if(actual->info < valor) { // Nos vamos por el hijo derecho
@@ -162,7 +164,7 @@ class SplayTree {
                 actual = actual->izq;
             } else { // Encontramos al valor
                 splay(actual); // Hacemos splay de tal valor
-                return actual;;
+                return actual;
             }
         }
         // Si terminamos la iteracion y no encontramos el valor, estamos en una hoja. Debemos hacer splay del ultimo nodo visitado (father)
