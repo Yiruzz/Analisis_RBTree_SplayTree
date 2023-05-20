@@ -47,7 +47,7 @@ class SplayTree {
             cout << "No se puede realizar una rotacion a una hoja" << "\n";
             return;
         }
-        
+
         Nodo *x = y->der; // x, hijo derecho de y
 
         // Actualizamos al padre de y, el cual ahora tendra como uno de sus hijos a x
@@ -78,9 +78,46 @@ class SplayTree {
         SplayTree() { // Constructor
             root = nullptr;
         }
+    
     void insert(int valor) {
+        Nodo *nuevoNodo = new Nodo; // Inicializamos el nuevo nodo a insertar
+        nuevoNodo->info = valor;
+        nuevoNodo->der = nullptr; // puntero nulo
+        nuevoNodo->izq = nullptr; 
+        if(this->root == nullptr) { // Caso en que el arbol este vacio
+            nuevoNodo->padre = nullptr;
+            this->root = nuevoNodo;
+            return;
+        }
+        Nodo *actual = this->root; // El nodo que estaremos actualizando
+        Nodo *father = nullptr; // El padre de tal nodo, asi cuando llegamos a una hoja, no perdemos la informacion del padre de tal hoja
+        while(actual != nullptr) { // Iteramos hasta llegar a una hoja
+            father = actual; // Actualizamos el valor del padre
+            if(actual->info < valor) { // Nos vamos por el hijo derecho
+                actual = actual->der;
+            } else if(actual->info > valor) { // Nos vamos por el hijo izquierdo
+                actual = actual->izq;
+            } else { // Insertamos valor ya existente ?
+                cout << "Intento de insercion de valor repetido" << "\n";
+                delete nuevoNodo;
+                return;
+            }
+        }
+
+        // Ahora actual es una hoja y father es su padre
+        nuevoNodo->padre = father;
+        if(father->info < valor) { // Somos hijo derecho
+            father->der = nuevoNodo;
+        } else if(father->info > valor) { // Somos hijo izquierdo
+            father->izq = nuevoNodo;
+        } else { // Insertamos valor ya existente ?
+            cout << "Intento de insercion de valor repetido" << "\n";
+            delete nuevoNodo;
+            return;
+        }
         
-        ; // Implementation
+        // Hacemos splay del nuevo nodo (lo dejamos en la raiz)
+        splay(nuevoNodo);
     }
     void search(int valor) {
         ; // Implementation
