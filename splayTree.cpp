@@ -71,9 +71,34 @@ class SplayTree {
         x->izq = y; // hijo izquierdo de x es ahora y
     }
 
-    void splay(Nodo *x) {
-        ; // Implementation
+    void splay(Nodo *x) { // La funcion splay deja al nodo x del Splay Tree en su raiz
+        while(x != this->root) { // Iteramos hasta dejar al nodo x en la raiz
+            if(x->padre == root) { // El padre de x es la raiz, hacemos zig o zag
+                if(x == x->padre->izq) { // Caso zig
+                    rotacion_derecha(x->padre); // Padre de x pasa a ser su hijo derecho
+                } else { // Caso zag
+                    rotacion_izquierda(x->padre); // Padre de x pasa a ser su hijo izquierdo
+                }
+            } else if(x == x->padre->izq && x == x->padre->padre->izq->izq) { // Caso zig-zig
+                // Tras esta doble rotacion a la derecha, el abuelo de x pasa a ser el nieto y el padre de x pasa a ser su hijo derecho
+                rotacion_derecha(x->padre->padre); // Aplicamos rotacion derecha en el abuelo
+                rotacion_derecha(x->padre); // Aplicamos rotacion derecha al padre
+            } else if(x == x->padre->der && x == x->padre->padre->izq->der) { // Caso zig-zag
+                // Tras esta doble rotacion, el abuelo de x pasa a ser su hijo derecho y su padre su hijo izquierdo
+                rotacion_izquierda(x->padre); // Rotamos a la izquierda en el padre, asi x pasa a ser el hijo izquierdo de su abuelo y su padre pasa a ser su hijo izquierdo
+                rotacion_derecha(x->padre); // Rotamos a la derecha el padre de x, ahora el hijo derecho de x es su padre
+            } else if(x == x->padre->izq && x == x->padre->padre->der->izq) { // Caso zag-zig
+                // Tras esta doble rotacion, el abuelo de x pasa a ser su hijo izquierdo y su padre su hijo derecho
+                rotacion_derecha(x->padre); // Rotamos a la derecha en el padre, asi x pasa a ser el hijo derecho de su abuelo y su padre pasa a ser su hijo derecho
+                rotacion_izquierda(x->padre); // Rotamos a la izquierda el padre de x, ahora el hijo izquierdo de x es su padre 
+            } else { // Caso zag-zag
+                // Tras esta doble rotacion a la izquierda, el abuelo de x pasa a ser el nieto y el padre de x pasa a ser su hijo izquierdo
+                rotacion_izquierda(x->padre->padre); // Aplicamos rotacion derecha en el abuelo
+                rotacion_izquierda(x->padre); // Aplicamos rotacion derecha al padre
+            }
+        }
     }
+
     public: // Campos y metodos publicos del splayTree
         SplayTree() { // Constructor
             root = nullptr;
@@ -98,7 +123,8 @@ class SplayTree {
             } else if(actual->info > valor) { // Nos vamos por el hijo izquierdo
                 actual = actual->izq;
             } else { // Insertamos valor ya existente ?
-                cout << "Intento de insercion de valor repetido" << "\n";
+                cout << "Intento de insercion de valor repetido, se deja el nodo con el valor en la raiz" << "\n";
+                splay(actual); // Dejamos al elemento que intentamos insertar como raiz
                 delete nuevoNodo;
                 return;
             }
