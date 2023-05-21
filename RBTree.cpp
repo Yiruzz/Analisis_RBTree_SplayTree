@@ -50,7 +50,7 @@ class RBTree { // Clase que representa a los arboles rojo-negro
             if(x->der != nullptr) {
                 x->der->padre = y;
             }
-
+            
             // Actualizamos x e y
             y->izq = x->der; // Hijo izquierdo de y es el hijo derecho de x
             x->padre = y->padre; // El padre de x es ahora el padre de y
@@ -87,10 +87,36 @@ class RBTree { // Clase que representa a los arboles rojo-negro
             x->izq = y; // hijo izquierdo de x es ahora y
         }
 
-        void balancear(NodoRB *x) { // Metodo que se encargara de balancear el arbol tras una insercion      
-            while(x->padre->color == ROJO) { // Solo necesitamos hacer cambios cuando el padre es ROJO
+        void balanceoMedianteRotacion(NodoRB *x) {
+            // Tenemos varios casos segun estemos en un zigzig, zagzag, zigzag o zagzig
+            if(x == x->padre->izq && x->padre == x->padre->padre->izq) { // Caso zigzig, se rota a la derecha en el abuelo y el padre con el abuelo cambian sus colores
+                x->padre->padre->color = ROJO;
+                x->padre->color = NEGRO;
+                rotacion_derecha(x->padre->padre);
+            } else if(x == x->padre->der && x->padre == x->padre->padre->der) { // Caso zagzag, simetrico a zigzig
+                x->padre->padre->color = ROJO;
+                x->padre->color = NEGRO;
+                rotacion_izquierda(x->padre->padre);
+            } else if(x == x->padre->der && x->padre == x->padre->padre->izq) { // Caso zigzag
+                rotacion_izquierda(x->padre); // Tras esta rotacion, quedamos en el caso zigzig
+                x->color = NEGRO;
+                x->padre->color = ROJO;
+                rotacion_derecha(x->padre); // Tras rotar a la izquierda, ahora soy el nodo del medio del zigzig
+            } else { // Caso zagzig, simetrico a zigzag
+                rotacion_derecha(x->padre);
+                x->color = NEGRO;
+                x->padre->color = ROJO;
+                rotacion_izquierda(x->padre);
+            }
+        }
+
+        void balancear(NodoRB *x) { // Metodo que se encargara de balancear el arbol tras una insercion     
+            while(x->padre->color == ROJO) { // Solo necesitamos hacer cambios cuando el padre es ROJO, iteramos porque hay casos en los que se debe recheckear la condicion
                 NodoRB *tio = (x->padre == x->padre->padre->izq) ? x->padre->padre->der : x->padre->padre->izq;
-                if(tio->color == ROJO) { // Caso en que el tio es ROJO, cambiamos color al padre, tio y abuelo. Luego checkeamos al abuelo
+                if(tio == nullptr) { // Caso en que tio es una hoja, o sea de color NEGRO
+                    balanceoMedianteRotacion(x);
+                }
+                else if(tio->color == ROJO) { // Caso en que el tio es ROJO, cambiamos color al padre, tio y abuelo. Luego checkeamos al abuelo
                     x->padre->color = NEGRO;
                     tio->color = NEGRO;
                     if(x->padre->padre == this->root) { // La raiz no debemos cambiarla nunca a color rojo, en caso de que el abuelo se la raiz tras el cmabio de color se termina
@@ -99,28 +125,10 @@ class RBTree { // Clase que representa a los arboles rojo-negro
                     x->padre->padre->color = ROJO; 
                     x = x->padre->padre; // Ahora el abuelo puede estar violando el invariante, se debe checkear denuevo    
                 } else { // Caso en que el tio es NEGRO
-                    // Tenemos varios casos segun estemos en un zigzig, zagzag, zigzag o zagzig
-                    if(x == x->padre->padre->izq->izq) { // Caso zigzig, se rota a la derecha en el abuelo y el padre con el abuelo cambian sus colores
-
-                        x->padre->padre->color = ROJO;
-                        x->padre->color = NEGRO;
-                        rotacion_derecha(x->padre->padre);
-                    } else if(x == x->padre->padre->der->der) { // Caso zagzag, simetrico a zigzig
-                        x->padre->padre->color = ROJO;
-                        x->padre->color = NEGRO;
-                        rotacion_izquierda(x->padre->padre);
-                    } else if(x == x->padre->padre->izq->der) { // Caso zigzag
-                        rotacion_izquierda(x->padre); // Tras esta rotacion, quedamos en el caso zigzig
-                        x->color = NEGRO;
-                        x->padre->color = ROJO;
-                        rotacion_derecha(x->padre); // Tras rotar a la izquierda, ahora soy el nodo del medio del zigzig
-                    } else { // Caso zagzig, simetrico a zigzag
-                        rotacion_derecha(x->padre);
-                        x->color = NEGRO;
-                        x->padre->color = ROJO;
-                        rotacion_izquierda(x->padre);
-                    }
+                    balanceoMedianteRotacion(x);
                 }
+
+                if(x->padre == nullptr) return; // x llego a ser la raiz
             }
         }
 
@@ -193,3 +201,30 @@ class RBTree { // Clase que representa a los arboles rojo-negro
             return nullptr; // No encontramos al valor
         }
 };
+
+
+int main() {
+    RBTree t;
+    t.insert(1);
+    cout << t.root->info << endl;
+    t.insert(3);
+    cout << t.root->info << endl;
+    t.insert(2);
+    cout << t.root->info << endl;
+    t.insert(4);
+    cout << t.root->info << endl;
+    t.insert(5);
+    cout << t.root->info << endl;
+    t.insert(6);
+    cout << t.root->info << endl;
+    t.insert(7);
+    cout << t.root->info << endl;
+    t.insert(8);
+    cout << t.root->info << endl;
+    t.insert(9);
+    cout << t.root->info << endl;
+    t.search(3);
+    cout << t.root->info << endl;
+    t.search(7);
+    cout << t.root->info << endl;
+}
