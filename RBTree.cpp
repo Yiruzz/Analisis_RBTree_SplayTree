@@ -210,8 +210,8 @@ class RBTree { // Clase que representa a los arboles rojo-negro
         }
 
     void destroy() { // Function que destruye la totalidad del arbol, es decir libera la memoria asociada a cada nodo
-        destroyTree(this->root);
-        this->root = nullptr;
+        destroyTree(this->root); // Llamamos a funcion auxiliar recursiva
+        this->root = nullptr; // La raiz ahora es nula
     }
 };
 

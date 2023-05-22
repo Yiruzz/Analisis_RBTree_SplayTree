@@ -181,8 +181,8 @@ class SplayTree {
     }
 
     void destroy() { // Function que destruye la totalidad del arbol, es decir libera la memoria asociada a cada nodo
-        destroyTree(this->root);
-        this->root = nullptr;
+        destroyTree(this->root); // Llamamos a funcion recursiva que ira destruyendo los nodos
+        this->root = nullptr; // La raiz es ahora nula
     }
 };
 

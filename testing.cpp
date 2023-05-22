@@ -68,10 +68,10 @@ int main(int argc, char const *argv[]) {
     int size_arr = pow(2,28);
     int *M = new int[size_arr]; // Creamos un arreglo en memoria dinamica de tamaño n=2**N
 
+    SplayTree splayTree; // Declaramos el splayTree
+    RBTree rbTree; // Declaramos el RBTree
     // Iteramos 5 veces para conseguir varias mediciones de tiempo
     for(int i = 0; i < 5; i++) { 
-        SplayTree splayTree; // Declaramos el splayTree
-        RBTree rbTree; // Declaramos el RBTree
 
         mezclarArreglo(M, size_arr); // Conseguimos una permutacion aleatoria del arreglo M
         mezclarArreglo(a, n); // Conseguimos permutacion aleatoria para inicializar los arboles de manera desordenada
