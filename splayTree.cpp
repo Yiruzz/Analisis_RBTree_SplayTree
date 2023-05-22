@@ -97,6 +97,14 @@ class SplayTree {
                 rotacion_izquierda(x->padre); // Aplicamos rotacion derecha al padre
             }
         }
+
+        void destroyTree(Nodo *nodo) { // Destruimos el arbol recorriendolo en preorden
+            if(nodo == nullptr) // Estamos en una hoja
+                return;
+            destroyTree(nodo->izq); // Destruimos los hijos izquierdos
+            destroyTree(nodo->der); // Destruimos los hijos derechos
+            delete [] nodo; // Destruimos el nodo
+        }
     }
 
     public: // Campos y metodos publicos del splayTree
@@ -170,6 +178,11 @@ class SplayTree {
         // Si terminamos la iteracion y no encontramos el valor, estamos en una hoja. Debemos hacer splay del ultimo nodo visitado (father)
         splay(father);
         return nullptr;
+    }
+
+    void destroy() { // Function que destruye la totalidad del arbol, es decir libera la memoria asociada a cada nodo
+        destroyTree(this->root);
+        this->root = nullptr;
     }
 };
 

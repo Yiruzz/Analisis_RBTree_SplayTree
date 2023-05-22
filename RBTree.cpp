@@ -132,6 +132,14 @@ class RBTree { // Clase que representa a los arboles rojo-negro
             }
         }
 
+        void destroyTree(NodoRB *nodo) { // Destruimos el arbol recorriendolo en preorden
+            if(nodo == nullptr) // Estamos en una hoja
+                return;
+            destroyTree(nodo->izq); // Destruimos los hijos izquierdos
+            destroyTree(nodo->der); // Destruimos los hijos derechos
+            delete [] nodo; // Destruimos el nodo
+        }
+
     public: //
         NodoRB *root; // raiz del arbol rojo-negro
 
@@ -200,6 +208,11 @@ class RBTree { // Clase que representa a los arboles rojo-negro
             }
             return nullptr; // No encontramos al valor
         }
+
+    void destroy() { // Function que destruye la totalidad del arbol, es decir libera la memoria asociada a cada nodo
+        destroyTree(this->root);
+        this->root = nullptr;
+    }
 };
 
 

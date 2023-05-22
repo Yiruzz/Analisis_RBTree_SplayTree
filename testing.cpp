@@ -97,6 +97,8 @@ int main(int argc, char const *argv[]) {
     csv_RBMySD[(N-16)*2] = mean(data2); // Calculamos y guardamos la media y disviacion estandar del algoritmo2 en el arreglo correspondiente 
     csv_RBMySD[(N-16)*2 + 1] = calculateSD(data2);
     delete[] a; // Liberamos la memoria para el actual n
+    splayTree.destroy(); // Destruimos ambos arboles, pues el n cambiara
+    rbTree.destroy();
   }
   delete [] M; // Liberamos la memoria del arreglo de M = 2**28
 
