@@ -10,7 +10,7 @@ typedef struct NodoRB {
     NodoRB *padre; // Puntero a nodo padre
     NodoRB *izq; // Puntero a nodo del hijo izquierdo
     NodoRB *der; // Puntero a nodo del hijo derecho
-    int color; // Donde guardamos el color
+    char color; // Donde guardamos el color
 } NodoRB;
 
 class RBTree { // Clase que representa a los arboles rojo-negro

@@ -12,7 +12,7 @@ void mezclarArreglo(int *(&arr), int n) { // Funcion que genera una permutacion 
 }
 
 // Funcion que ejecutara n busquedas aleatorias en un splayTree y tomara el tiempo que demora
-chrono::duration<double> testSearchSplayTree(SplayTree *(&tree), int *(&arr), int n){
+chrono::duration<double> testSearchSplayTree(SplayTree &tree, int *(&arr), int n){
     auto start = chrono::system_clock::now(); // Tomamos el tiempo de ahora  
     for(int i = 0; i < n ; i++) // Hacemos n busquedas aleatorias
         tree.search(arr[i]);
@@ -23,7 +23,7 @@ chrono::duration<double> testSearchSplayTree(SplayTree *(&tree), int *(&arr), in
 }
 
 // Funcion que ejecutara n busquedas aleatorias en un RBTree y tomara el tiempo que demora
-chrono::duration<double> testSearchRBTree(RBTree *(&tree), int *(&arr), int n){
+chrono::duration<double> testSearchRBTree(RBTree &tree, int *(&arr), int n){
     auto start = chrono::system_clock::now(); // Tomamos el tiempo de ahora    
     for(int i = 0; i < n ; i++) // Hacemos n busquedas aleatorias
         tree.search(arr[i]);
@@ -56,10 +56,9 @@ int main(int argc, char const *argv[]) {
   double csv_splayMySD[18]; // Arreglo con las medias y desviaciones estandar de los tiempos de las busquedas de splayTree
   double csv_RBTiempos[45]; // Lo mismo para el RBTree (el que utiliza mergeSort)
   double csv_RBMySD[18];
-  int size_arr = pow(2,28);
+
+  int size_arr = pow(2,28); // Tamaño del arreglo a utilizar
   int *M = new int[size_arr]; // Creamos un arreglo en memoria dinamica de tamaño n=2**N
-  for(int i = 0; i < size_arr; i++) // Inicializamos el arreglo
-    M[i] = i+1;
 
   for (int N = 16; N <= 24 ; N++){ // Iteramos para todos los n desde 2**16 hasta 2**24
     double data1[5]; // Arreglo que guardara los tiempos obtenido en cada uno de los 10 testeos por cada n para splay tree
@@ -79,6 +78,12 @@ int main(int argc, char const *argv[]) {
         rbTree.insert(a[j]);
     }
 
+    int repetir = pow(2, 28 - N); // repetir = M/2**N = 2**28/2**N = 2**(28-N)
+    for(int i = 0; i < N; i++) { // Inicializamos el arreglo
+      for(int k = 0; k < repetir; k++) // Cada elemento tiene que aparecer una cantidad repetir de veces para que haya equiprobabilidad
+          M[i] = i+1;
+    }
+
     for(int i = 0; i < 5; i++) { // Haremos 5 testeos de busqueda para cada arbol
 
         mezclarArreglo(M, size_arr); // Conseguimos una permutacion aleatoria del arreglo M
@@ -89,7 +94,7 @@ int main(int argc, char const *argv[]) {
         data1[i] = time.count(); // Guardamos el tiempo que demora en el arreglo respectivo
         csv_splayTiempos[i+5*(N-16)] = time.count(); // Guardamos el tiempo en el arreglo que utilizaremos para exportar los resultados posteriormente
 
-        time = testSearchRBTree(RBTree, M, size_arr); // Busamos los elementos en el RBTree y guardamos el tiempo que demora
+        time = testSearchRBTree(rbTree, M, size_arr); // Busamos los elementos en el RBTree y guardamos el tiempo que demora
         data2[i] = time.count(); // Guardamos el tiempo que demora en los arreglos que corresponden
         csv_RBTiempos[i+5*(N-16)] = time.count();
     }
@@ -99,6 +104,7 @@ int main(int argc, char const *argv[]) {
 
     csv_RBMySD[(N-16)*2] = mean(data2); // Calculamos y guardamos la media y disviacion estandar del algoritmo2 en el arreglo correspondiente 
     csv_RBMySD[(N-16)*2 + 1] = calculateSD(data2);
+    
     splayTree.destroy(); // Destruimos ambos arboles, pues el n cambiara
     rbTree.destroy();
     delete[] a; // Liberamos la memoria para el actual n
@@ -109,16 +115,16 @@ int main(int argc, char const *argv[]) {
   cout << "A1_t1,A1_t2,A1_t3,A1_t4,A1_t5,A1_Mean,A1_SD,A2_t1,A2_t2,A2_t3,A2_t4,A2_t5,A2_Mean,A2_SD" << "\n";
   for(int i = 0; i<9; i++) { // Iteramos para printear los valores correspondientes
     for(int j = 0; j < 5; j++) { // Printeamos los valores de los tiempos obtenidos del algoritmo1
-      cout << csv_alg1Tiempos[j+5*i] << ",";
+      cout << csv_splayTiempos[j+5*i] << ",";
     }
-    cout << csv_alg1MySD[i*2] << ","; // Printeamos la media del algoritmo1
-    cout << csv_alg1MySD[i*2+1] << ","; // Printeamos la desviacion estandar del algoritmo1
+    cout << csv_splayMySD[i*2] << ","; // Printeamos la media del algoritmo1
+    cout << csv_splayMySD[i*2+1] << ","; // Printeamos la desviacion estandar del algoritmo1
 
     for(int j = 0; j < 5; j++){ // Hacemos exactamente lo mismo para los tiempos obtenidos en el algoritmo2
-      cout << csv_alg2Tiempos[j+5*i] << ",";
+      cout << csv_RBTiempos[j+5*i] << ",";
     }
-    cout << csv_alg2MySD[i*2] << ",";
-    cout << csv_alg2MySD[i*2+1] << "\n";
+    cout << csv_RBMySD[i*2] << ",";
+    cout << csv_RBMySD[i*2+1] << "\n";
   }
   return 0; // Finalizamos la ejecucion
 }
