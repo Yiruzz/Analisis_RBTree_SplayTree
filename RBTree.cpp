@@ -5,6 +5,8 @@ using namespace std;
 #define NEGRO 0 // Definimos macros
 #define ROJO 1
 
+NodoRB raiz;
+
 typedef struct NodoRB {
     int info; // Donde se almacena el valor
     NodoRB *padre; // Puntero a nodo padre

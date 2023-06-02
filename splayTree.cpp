@@ -97,14 +97,14 @@ class SplayTree {
                 rotacion_izquierda(x->padre); // Aplicamos rotacion derecha al padre
             }
         }
+    }
 
-        void destroyTree(Nodo *nodo) { // Destruimos el arbol recorriendolo en preorden
-            if(nodo == nullptr) // Estamos en una hoja
-                return;
-            destroyTree(nodo->izq); // Destruimos los hijos izquierdos
-            destroyTree(nodo->der); // Destruimos los hijos derechos
-            delete [] nodo; // Destruimos el nodo
-        }
+    void destroyTree(Nodo *nodo) {// Destruimos el arbol recorriendolo en preorden
+        if(nodo == nullptr)// Estamos en una hoja
+            return;
+        destroyTree(nodo->izq); // Destruimos los hijos izquierdos
+        destroyTree(nodo->der); // Destruimos los hijos derechos
+        delete [] nodo; // Destruimos el nodo
     }
 
     public: // Campos y metodos publicos del splayTree

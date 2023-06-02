@@ -77,7 +77,7 @@ int main(int argc, char const *argv[]) {
         rbTree.insert(a[j]);
     }
 
-    alpha = 0.5;
+    double alpha = 0.5;
     int *f = new int[size_arr];
     long long suma = 0;
 
@@ -86,10 +86,10 @@ int main(int argc, char const *argv[]) {
         suma+=f[i];
     }
     int *phi = new int[n];
-    largoArregloNormalizado = 0
+    long long largoArregloNormalizado = 0;
     for(int i = 0; i < n; i++) {
         phi[i] = floor((f[i]*size_arr)/suma);
-        largoArregloNormalizado += phi;
+        largoArregloNormalizado += phi[i];
     }
     int *C = new int[largoArregloNormalizado];
     int indice = 0;
