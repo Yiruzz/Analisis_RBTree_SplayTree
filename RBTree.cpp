@@ -10,7 +10,7 @@ typedef struct NodoRB {
     NodoRB *padre; // Puntero a nodo padre
     NodoRB *izq; // Puntero a nodo del hijo izquierdo
     NodoRB *der; // Puntero a nodo del hijo derecho
-    char color; // Donde guardamos el color
+    short color; // Donde guardamos el color
 } NodoRB;
 
 class RBTree { // Clase que representa a los arboles rojo-negro
@@ -140,6 +140,15 @@ class RBTree { // Clase que representa a los arboles rojo-negro
             delete [] nodo; // Destruimos el nodo
         }
 
+        void inOrderPrintParameter(NodoRB *nodo) { // Funcion que recorre el arbol de manera inorden y printea los nodos
+            if(nodo == nullptr) {
+                return;
+            }
+            inOrderPrintParameter(nodo->izq);
+            cout << nodo->info << " " << nodo->color << " ";
+            inOrderPrintParameter(nodo->der);
+        }
+
     public: //
         NodoRB *root; // raiz del arbol rojo-negro
 
@@ -213,6 +222,12 @@ class RBTree { // Clase que representa a los arboles rojo-negro
         destroyTree(this->root); // Llamamos a funcion auxiliar recursiva
         this->root = nullptr; // La raiz ahora es nula
     }
+
+    void inOrderPrint() { // Funcion para printear el arbol de manera inorden
+        inOrderPrintParameter(this->root);
+        cout << endl;
+        return;
+    }
 };
 
 
@@ -240,4 +255,5 @@ class RBTree { // Clase que representa a los arboles rojo-negro
     cout << t.root->info << endl;
     t.search(7);
     cout << t.root->info << endl;
+    t.inOrderPrint();
 }*/

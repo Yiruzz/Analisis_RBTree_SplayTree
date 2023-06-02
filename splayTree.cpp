@@ -108,6 +108,15 @@ class SplayTree {
         delete [] nodo; // Destruimos el nodo
     }
 
+    void inOrderPrintParameter(Nodo *nodo) {
+        if(nodo == nullptr) {
+            return;
+        }
+        inOrderPrintParameter(nodo->izq);
+        cout << nodo->info << " ";
+        inOrderPrintParameter(nodo->der);
+    }
+
     public: // Campos y metodos publicos del splayTree
 
         Nodo *root;
@@ -183,6 +192,12 @@ class SplayTree {
         destroyTree(this->root); // Llamamos a funcion recursiva que ira destruyendo los nodos
         this->root = nullptr; // La raiz es ahora nula
     }
+
+    void inOrderPrint() {
+        inOrderPrintParameter(this->root);
+        cout << endl;
+        return;
+    }
 };
 
 /*int main() {
@@ -209,4 +224,6 @@ class SplayTree {
     cout << t.root->info << endl;
     t.search(7);
     cout << t.root->info << endl;
-}*/
+
+    t.inOrderPrint();
+} */
