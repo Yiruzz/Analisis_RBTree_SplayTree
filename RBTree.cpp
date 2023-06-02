@@ -5,8 +5,6 @@ using namespace std;
 #define NEGRO 0 // Definimos macros
 #define ROJO 1
 
-NodoRB raiz;
-
 typedef struct NodoRB {
     int info; // Donde se almacena el valor
     NodoRB *padre; // Puntero a nodo padre
@@ -218,7 +216,7 @@ class RBTree { // Clase que representa a los arboles rojo-negro
 };
 
 
-int main() {
+/*int main() {
     RBTree t;
     t.insert(1);
     cout << t.root->info << endl;
@@ -242,4 +240,4 @@ int main() {
     cout << t.root->info << endl;
     t.search(7);
     cout << t.root->info << endl;
-}
+}*/

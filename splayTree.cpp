@@ -78,16 +78,17 @@ class SplayTree {
                     rotacion_derecha(x->padre); // Padre de x pasa a ser su hijo derecho
                 } else { // Caso zag
                     rotacion_izquierda(x->padre); // Padre de x pasa a ser su hijo izquierdo
+
                 }
-            } else if(x == x->padre->izq && x == x->padre->padre->izq->izq) { // Caso zig-zig
+            } else if(x == x->padre->izq && x->padre == x->padre->padre->izq) { // Caso zig-zig
                 // Tras esta doble rotacion a la derecha, el abuelo de x pasa a ser el nieto y el padre de x pasa a ser su hijo derecho
                 rotacion_derecha(x->padre->padre); // Aplicamos rotacion derecha en el abuelo
                 rotacion_derecha(x->padre); // Aplicamos rotacion derecha al padre
-            } else if(x == x->padre->der && x == x->padre->padre->izq->der) { // Caso zig-zag
+            } else if(x == x->padre->der && x->padre == x->padre->padre->izq) { // Caso zig-zag
                 // Tras esta doble rotacion, el abuelo de x pasa a ser su hijo derecho y su padre su hijo izquierdo
                 rotacion_izquierda(x->padre); // Rotamos a la izquierda en el padre, asi x pasa a ser el hijo izquierdo de su abuelo y su padre pasa a ser su hijo izquierdo
                 rotacion_derecha(x->padre); // Rotamos a la derecha el padre de x, ahora el hijo derecho de x es su padre
-            } else if(x == x->padre->izq && x == x->padre->padre->der->izq) { // Caso zag-zig
+            } else if(x == x->padre->izq && x->padre == x->padre->padre->der) { // Caso zag-zig
                 // Tras esta doble rotacion, el abuelo de x pasa a ser su hijo izquierdo y su padre su hijo derecho
                 rotacion_derecha(x->padre); // Rotamos a la derecha en el padre, asi x pasa a ser el hijo derecho de su abuelo y su padre pasa a ser su hijo derecho
                 rotacion_izquierda(x->padre); // Rotamos a la izquierda el padre de x, ahora el hijo izquierdo de x es su padre 
@@ -140,7 +141,6 @@ class SplayTree {
                 return;
             }
         }
-
         // Ahora actual es una hoja y father es su padre
         nuevoNodo->padre = father;
         if(father->info < valor) { // Somos hijo derecho
@@ -152,7 +152,6 @@ class SplayTree {
             delete nuevoNodo;
             return;
         }
-        
         // Hacemos splay del nuevo nodo (lo dejamos en la raiz)
         splay(nuevoNodo);
     }
@@ -186,7 +185,7 @@ class SplayTree {
     }
 };
 
-int main() {
+/*int main() {
     SplayTree t;
     t.insert(1);
     cout << t.root->info << endl;
@@ -210,4 +209,4 @@ int main() {
     cout << t.root->info << endl;
     t.search(7);
     cout << t.root->info << endl;
-}
+}*/

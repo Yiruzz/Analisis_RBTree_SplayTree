@@ -72,11 +72,13 @@ int main(int argc, char const *argv[]) {
 
     SplayTree splayTree; // Declaramos el splayTree
     RBTree rbTree; // Declaramos el RBTree
+
     // Iteramos 5 veces para conseguir varias mediciones de tiempo
     for(int j = 0; j < n; j++) { // Inicializamos los arboles con la permutacion aleatoria conseguida
         splayTree.insert(a[j]);
         rbTree.insert(a[j]);
     }
+    cout << "SIUUU";
 
     int repetir = pow(2, 28 - N); // repetir = M/2**N = 2**28/2**N = 2**(28-N)
     for(int i = 0; i < N; i++) { // Inicializamos el arreglo
