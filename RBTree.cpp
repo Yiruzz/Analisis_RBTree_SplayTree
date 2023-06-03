@@ -128,7 +128,8 @@ class RBTree { // Clase que representa a los arboles rojo-negro
                     balanceoMedianteRotacion(x);
                 }
 
-                if(x->padre == nullptr) return; // x llego a ser la raiz, se cumplen los invariantes pues su padre es nulo
+                if(x->padre == nullptr) 
+                    return; // x llego a ser la raiz, se cumplen los invariantes pues su padre es nulo
             }
         }
 
