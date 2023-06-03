@@ -13,9 +13,10 @@ void mezclarArreglo(int *(&arr), int n) { // Funcion que genera una permutacion 
 
 // Funcion que ejecutara n busquedas aleatorias en un splayTree y tomara el tiempo que demora
 chrono::duration<double> testSearchSplayTree(SplayTree &tree, int *(&arr), int n){
-    auto start = chrono::system_clock::now(); // Tomamos el tiempo de ahora  
+    auto start = chrono::system_clock::now(); // Tomamos el tiempo de ahora
     for(int i = 0; i < n ; i++) // Hacemos n busquedas aleatorias
         tree.search(arr[i]);
+        
     auto end = chrono::system_clock::now(); // Calculamos el tiempo denuevo
  
     chrono::duration<double> elapsed_seconds = end-start; // Calculamos el tiempo efectivo que demoro
@@ -26,7 +27,8 @@ chrono::duration<double> testSearchSplayTree(SplayTree &tree, int *(&arr), int n
 chrono::duration<double> testSearchRBTree(RBTree &tree, int *(&arr), int n){
     auto start = chrono::system_clock::now(); // Tomamos el tiempo de ahora    
     for(int i = 0; i < n ; i++) // Hacemos n busquedas aleatorias
-        tree.search(arr[i]);
+        NodoRB *res = tree.search(arr[i]);
+
     auto end = chrono::system_clock::now(); // Calculamos el tiempo denuevo
 
     chrono::duration<double> elapsed_seconds = end-start; // Calculamos el tiempo efectivo que demoro
@@ -60,7 +62,7 @@ int main(int argc, char const *argv[]) {
   int size_arr = pow(2,28); // Tamaño del arreglo a utilizar
   int *M = new int[size_arr]; // Creamos un arreglo en memoria dinamica de tamaño n=2**N
 
-  for (int N = 22; N <= 24 ; N++){ // Iteramos para todos los n desde 2**16 hasta 2**24
+  for (int N = 20; N <= 24 ; N++){ // Iteramos para todos los n desde 2**16 hasta 2**24
     double data1[5]; // Arreglo que guardara los tiempos obtenido en cada uno de los 10 testeos por cada n para splay tree
     double data2[5]; // Mismo arreglo para el segundo algoritmo que utiliza RBTree
     int n = pow(2, N); // Calculamos el n de esta iteracion
@@ -76,18 +78,19 @@ int main(int argc, char const *argv[]) {
     // Iteramos 5 veces para conseguir varias mediciones de tiempo
     auto start = chrono::system_clock::now(); // Tomamos el tiempo de ahora   
     for(int j = 0; j < n; j++) { // Inicializamos los arboles con la permutacion aleatoria conseguida
-        //splayTree.insert(a[j]);
-        rbTree.insert(a[j]);
+        splayTree.insert(a[j]);
+        //rbTree.insert(a[j]);
     }
     auto end = chrono::system_clock::now(); // Calculamos el tiempo denuevo
     chrono::duration<double> elapsed_seconds = end-start; // Calculamos el tiempo efectivo que demoro
     cout << elapsed_seconds.count() << endl;
     cout << "SIUU" << endl << endl;
 
-    int repetir = pow(2, 28 - N); // repetir = M/2**N = 2**28/2**N = 2**(28-N)
-    for(int i = 0; i < N; i++) { // Inicializamos el arreglo
+    int repetir = pow(2, (28 - N)); // repetir = M/2**N = 2**28/2**N = 2**(28-N)
+    int indice = 0;
+    for(int i = 0; i < n; i++) { // Inicializamos el arreglo
       for(int k = 0; k < repetir; k++) // Cada elemento tiene que aparecer una cantidad repetir de veces para que haya equiprobabilidad
-          M[i] = i+1;
+          M[indice++] = i+1;
     }
 
     for(int i = 0; i < 5; i++) { // Haremos 5 testeos de busqueda para cada arbol
@@ -96,8 +99,8 @@ int main(int argc, char const *argv[]) {
 
         chrono::duration<double> time; // Declaramos la variable time que guardara lo que demora en ejecutarse un algoritmo
         time = testSearchRBTree(rbTree, M, size_arr); // Busamos los elementos en el RBTree y guardamos el tiempo que demora
-        cout << time.count() << endl;
         data2[i] = time.count(); // Guardamos el tiempo que demora en los arreglos que corresponden
+        cout << time.count() << endl;
         csv_RBTiempos[i+5*(N-16)] = time.count();
 
         time = testSearchSplayTree(splayTree, M, size_arr); // Buscamos los elementos en un splayTree y guardamos cuanto demora
