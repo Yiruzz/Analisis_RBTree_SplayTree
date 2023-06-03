@@ -62,7 +62,7 @@ int main() {
   int size_arr = pow(2,28); // Tamaño del arreglo a utilizar
   int *M = new int[size_arr]; // Creamos un arreglo en memoria dinamica de tamaño n=2**N
 
-  for (int N = 20; N <= 24 ; N++){ // Iteramos para todos los n desde 2**16 hasta 2**24
+  for (int N = 16; N <= 24 ; N++){ // Iteramos para todos los n desde 2**16 hasta 2**24
     double data1[5]; // Arreglo que guardara los tiempos obtenido en cada uno de los 10 testeos por cada n para splay tree
     double data2[5]; // Mismo arreglo para el segundo algoritmo que utiliza RBTree
     int n = pow(2, N); // Calculamos el n de esta iteracion
@@ -74,47 +74,41 @@ int main() {
 
     SplayTree splayTree; // Declaramos el splayTree
     RBTree rbTree; // Declaramos el RBTree
-    
-    // Iteramos 5 veces para conseguir varias mediciones de tiempo
-    auto start = chrono::system_clock::now(); // Tomamos el tiempo de ahora   
+     
     for(int j = 0; j < n; j++) { // Inicializamos los arboles con la permutacion aleatoria conseguida
-        //splayTree.insert(a[j]);
+        splayTree.insert(a[j]);
         rbTree.insert(a[j]);
     }
-    auto end = chrono::system_clock::now(); // Calculamos el tiempo denuevo
-    chrono::duration<double> elapsed_seconds = end-start; // Calculamos el tiempo efectivo que demoro
-    cout << elapsed_seconds.count() << endl;
-    cout << "SIUU" << endl << endl;
 
-    int repetir = pow(2, (28 - N)); // repetir = M/2**N = 2**28/2**N = 2**(28-N)
+    // Inicializamos el arreglo M que contendra los elementos a buscar, cada valor se debera repetir algunas veces para alcanzar 2**28 valores
+    int repetir = pow(2, (28 - N)); // repetir = M/2**N = 2**28/2**N = 2**(28-N) 
     int indice = 0;
     for(int i = 0; i < n; i++) { // Inicializamos el arreglo
       for(int k = 0; k < repetir; k++) // Cada elemento tiene que aparecer una cantidad repetir de veces para que haya equiprobabilidad
           M[indice++] = i+1;
     }
 
-    for(int i = 4; i < 5; i++) { // Haremos 5 testeos de busqueda para cada arbol
+    // Iteramos 5 veces para conseguir varias mediciones de tiempo
+    for(int i = 0; i < 5; i++) { // Haremos 5 testeos de busqueda para cada arbol
 
         mezclarArreglo(M, size_arr); // Conseguimos una permutacion aleatoria del arreglo M
 
         chrono::duration<double> time; // Declaramos la variable time que guardara lo que demora en ejecutarse un algoritmo
         time = testSearchRBTree(rbTree, M, size_arr); // Busamos los elementos en el RBTree y guardamos el tiempo que demora
-        //data2[i] = time.count(); // Guardamos el tiempo que demora en los arreglos que corresponden
-        cout << time.count() << endl;
-        //csv_RBTiempos[i+5*(N-16)] = time.count();
+        data2[i] = time.count(); // Guardamos el tiempo que demora en los arreglos que corresponden
+        csv_RBTiempos[i+5*(N-16)] = time.count();
 
-        //time = testSearchSplayTree(splayTree, M, size_arr); // Buscamos los elementos en un splayTree y guardamos cuanto demora
-        //data1[i] = time.count(); // Guardamos el tiempo que demora en el arreglo respectivo
-        //cout << time.count() << endl;
-        //csv_splayTiempos[i+5*(N-16)] = time.count(); // Guardamos el tiempo en el arreglo que utilizaremos para exportar los resultados posteriormente
+        time = testSearchSplayTree(splayTree, M, size_arr); // Buscamos los elementos en un splayTree y guardamos cuanto demora
+        data1[i] = time.count(); // Guardamos el tiempo que demora en el arreglo respectivo
+        csv_splayTiempos[i+5*(N-16)] = time.count(); // Guardamos el tiempo en el arreglo que utilizaremos para exportar los resultados posteriormente
 
     }
 
-    //csv_splayMySD[(N-16)*2] = mean(data1); // Calculamos y guardamos la media del algoritmo1 en el arreglo correspondiente 
-    //csv_splayMySD[(N-16)*2 + 1] = calculateSD(data1); // Calculamos y guardamos la desviacion estandar del algoritmo1 en el arreglo que corresponde
+    csv_splayMySD[(N-16)*2] = mean(data1); // Calculamos y guardamos la media del algoritmo1 en el arreglo correspondiente 
+    csv_splayMySD[(N-16)*2 + 1] = calculateSD(data1); // Calculamos y guardamos la desviacion estandar del algoritmo1 en el arreglo que corresponde
 
-    //csv_RBMySD[(N-16)*2] = mean(data2); // Calculamos y guardamos la media y disviacion estandar del algoritmo2 en el arreglo correspondiente 
-    //csv_RBMySD[(N-16)*2 + 1] = calculateSD(data2);
+    csv_RBMySD[(N-16)*2] = mean(data2); // Calculamos y guardamos la media y disviacion estandar del algoritmo2 en el arreglo correspondiente 
+    csv_RBMySD[(N-16)*2 + 1] = calculateSD(data2);
     
     splayTree.destroy(); // Destruimos ambos arboles, pues el n cambiara
     rbTree.destroy();
