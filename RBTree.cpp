@@ -215,7 +215,11 @@ class RBTree { // Clase que representa a los arboles rojo-negro
                 } else if(actual->info > valor) { // Nos vamos por el hijo izquierdo
                     actual = actual->izq;
                 } else { // Encontramos al valor
-                    return actual;
+                    /* Pintamos la raiz de color negro para hacer una escritura al arbol, esto unicamente ese necesario para poder compilar
+                       con un nivel de optimizacion -O3 o -O2, ya que al hacer las busquedas y testear el tiempo si no hay una asignacion el
+                       compilador decide no ejecutar el loop para realizar las busquedas */
+                    this->root->color = NEGRO; 
+                    return actual; // Retornamos el valor actual
                 }
             }
             return nullptr; // No encontramos al valor
