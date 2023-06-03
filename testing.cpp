@@ -62,7 +62,7 @@ int main() {
   int size_arr = pow(2,28); // Tamaño del arreglo a utilizar
   int *M = new int[size_arr]; // Creamos un arreglo en memoria dinamica de tamaño n=2**N
 
-  for (int N = 20; N <= 24 ; N++){ // Iteramos para todos los n desde 2**16 hasta 2**24
+  for (int N = 16; N <= 24 ; N++){ // Iteramos para todos los n desde 2**16 hasta 2**24
     double data1[5]; // Arreglo que guardara los tiempos obtenido en cada uno de los 10 testeos por cada n para splay tree
     double data2[5]; // Mismo arreglo para el segundo algoritmo que utiliza RBTree
     int n = pow(2, N); // Calculamos el n de esta iteracion

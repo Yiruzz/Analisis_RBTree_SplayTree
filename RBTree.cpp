@@ -115,6 +115,7 @@ class RBTree { // Clase que representa a los arboles rojo-negro
                 NodoRB *tio = (x->padre == x->padre->padre->izq) ? x->padre->padre->der : x->padre->padre->izq;
                 if(tio == nullptr) { // Caso en que tio es una hoja, o sea de color NEGRO
                     balanceoMedianteRotacion(x);
+                    return;
                 }
                 else if(tio->color == ROJO) { // Caso en que el tio es ROJO, cambiamos color al padre, tio y abuelo. Luego checkeamos al abuelo
                     x->padre->color = NEGRO;
@@ -126,6 +127,7 @@ class RBTree { // Clase que representa a los arboles rojo-negro
                     x = x->padre->padre; // Ahora el abuelo puede estar violando el invariante, se debe checkear denuevo    
                 } else { // Caso en que el tio es NEGRO
                     balanceoMedianteRotacion(x);
+                    return;
                 }
 
                 if(x->padre == nullptr) 
