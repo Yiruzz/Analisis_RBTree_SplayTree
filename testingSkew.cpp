@@ -153,7 +153,7 @@ void correrDataset(double alpha){
 int main() {
   // Primero printeamos los "heads" del archivo csv
   cout << "SP_t1,SP_t2,SP_t3,SP_t4,SP_t5,SP_Mean,SP_SD,RB_t1,RB_t2,RB_t3,RB_t4,RB_t5,RB_Mean,RB_SD" << "\n";
-  correrDataset(0.5);
-  correrDataset(1);
-  correrDataset(1.5);
+  correrDataset(0.5); // Ejecutamos para alpha = 0.5
+  correrDataset(1); // alpha = 1.0
+  correrDataset(1.5); // alpha = 1.5
 }
