@@ -50,7 +50,7 @@ double calculateSD(double data[]) { // Funcion que calcula la desviacion estanda
   return sqrt(standardDeviation / 5);
 }
 
-int correrDataset(double alpha){
+void correrDataset(double alpha){
   // Arreglos para guardar los valores de testeo de esta ejecucion
   double csv_splayTiempos[45]; // Arreglo con los tiempos del splayTree
   double csv_splayMySD[18]; // Arreglo con las medias y desviaciones estandar de los tiempos de las busquedas de splayTree
@@ -147,13 +147,13 @@ int correrDataset(double alpha){
     cout << csv_RBMySD[i*2] << ",";
     cout << csv_RBMySD[i*2+1] << "\n";
   }
-  return 0; // Finalizamos la ejecucion
+  return; // Finalizamos la ejecucion
 }
 
 int main() {
   // Primero printeamos los "heads" del archivo csv
   cout << "SP_t1,SP_t2,SP_t3,SP_t4,SP_t5,SP_Mean,SP_SD,RB_t1,RB_t2,RB_t3,RB_t4,RB_t5,RB_Mean,RB_SD" << "\n";
-  int res1 = correrDataset(0.5);
-  int res2 = correrDataset(1);
-  int res3 = correrDataset(1.5);
+  correrDataset(0.5);
+  correrDataset(1);
+  correrDataset(1.5);
 }
