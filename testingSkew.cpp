@@ -57,7 +57,7 @@ int correrDataset(double alpha){
   double csv_RBTiempos[45]; // Lo mismo para el RBTree
   double csv_RBMySD[18];
 
-  for (int N = 16; N <= 24 ; N++){ // Iteramos para todos los n desde 2**16 hasta 2**24
+  for (int N = 24; N <= 24 ; N++){ // Iteramos para todos los n desde 2**16 hasta 2**24
     double data1[5]; // Arreglo que guardara los tiempos obtenido en cada uno de los 5 testeos por cada n para splay tree
     double data2[5]; // Mismo arreglo para el segundo algoritmo que utiliza RBTree
 
@@ -71,14 +71,14 @@ int correrDataset(double alpha){
   
 
     // Creamos el arreglo f que contendra las frecuencias no normalizadas
-    int *f = new int[n];
+    long long *f = new long long[n];
     long long SUM = 0; // Valor que guardara la suma de las frecuencias no normalizadas
 
     for(int i = 0; i < n ; i++) { // Calculamos la frecuencia para cada valor i del arreglo aleatorio
         f[i] = floor(pow(i, alpha));
         SUM+=f[i]; // Calculamos SUM
     }
-
+  
     int *phi = new int[n]; // Creamos el arreglo phi
     int largoArregloNormalizado = 0; // Variable que guardara la cantidad efectiva de elemento, que podra ser un poco mayor a M=2**28
     int M = pow(2,28); // Calculamos M
@@ -107,7 +107,7 @@ int correrDataset(double alpha){
     }
 
     // Haremos 5 testeos de busqueda para cada arbol
-    for(int i = 0; i < 5; i++) { 
+    for(int i = 4; i < 5; i++) { 
         mezclarArreglo(C1, largoArregloNormalizado); // Conseguimos una permutacion aleatoria del arreglo C1
 
         chrono::duration<double> time; // Declaramos la variable time que guardara lo que demora en ejecutarse un algoritmo
