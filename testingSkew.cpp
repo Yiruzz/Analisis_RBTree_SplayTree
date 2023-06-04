@@ -133,8 +133,7 @@ int correrDataset(double alpha){
     delete[] C1;
   }
 
-  // Primero printeamos los "heads" del archivo csv
-  cout << "SP_t1,SP_t2,SP_t3,SP_t4,SP_t5,SP_Mean,SP_SD,RB_t1,RB_t2,RB_t3,RB_t4,RB_t5,RB_Mean,RB_SD" << "\n";
+  // Iteramos printeando los resultados obtenidos en los distintos N
   for(int i = 0; i<9; i++) { // Iteramos para printear los valores correspondientes
     for(int j = 0; j < 5; j++) // Printeamos los valores de los tiempos obtenidos del SplayTree
       cout << csv_splayTiempos[j+5*i] << ",";
@@ -152,6 +151,8 @@ int correrDataset(double alpha){
 }
 
 int main() {
+  // Primero printeamos los "heads" del archivo csv
+  cout << "SP_t1,SP_t2,SP_t3,SP_t4,SP_t5,SP_Mean,SP_SD,RB_t1,RB_t2,RB_t3,RB_t4,RB_t5,RB_Mean,RB_SD" << "\n";
   int res1 = correrDataset(0.5);
   int res2 = correrDataset(1);
   int res3 = correrDataset(1.5);
