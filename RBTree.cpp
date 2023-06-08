@@ -140,7 +140,7 @@ class RBTree { // Clase que representa a los arboles rojo-negro
                 return;
             destroyTree(nodo->izq); // Destruimos los hijos izquierdos
             destroyTree(nodo->der); // Destruimos los hijos derechos
-            delete [] nodo; // Destruimos el nodo
+            delete nodo; // Destruimos el nodo
         }
 
         void inOrderPrintParameter(NodoRB *nodo) { // Funcion que recorre el arbol de manera inorden y printea los nodos

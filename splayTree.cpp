@@ -11,7 +11,6 @@ typedef struct Nodo {
 
 class SplayTree {
     private: // Campos y metodos privados del splayTree
-        //Nodo *root; // Raiz del splayTree
 
     void rotacion_derecha(Nodo *y) { // Rotacion hacia la derecha, con y padre de x
         if(y->izq == nullptr) { // Caso intento de rotar en una hoja
@@ -105,7 +104,7 @@ class SplayTree {
             return;
         destroyTree(nodo->izq); // Destruimos los hijos izquierdos
         destroyTree(nodo->der); // Destruimos los hijos derechos
-        delete [] nodo; // Destruimos el nodo
+        delete nodo; // Destruimos el nodo
     }
 
     void inOrderPrintParameter(Nodo *nodo) {

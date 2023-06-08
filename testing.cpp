@@ -60,7 +60,7 @@ int main() {
   double csv_RBMySD[18];
 
   int size_arr = pow(2,28); // Tamaño del arreglo a utilizar
-  int *M = new int[size_arr]; // Creamos un arreglo en memoria dinamica de tamaño n=2**28
+  int *M = new int[size_arr];
 
   for (int N = 16; N <= 24 ; N++) { // Iteramos para todos los n desde 2**16 hasta 2**24
     double data1[5]; // Arreglo que guardara los tiempos obtenido en cada uno de los 5 testeos por cada n para SplayTree
@@ -114,7 +114,7 @@ int main() {
     rbTree.destroy();
     delete[] a; // Liberamos la memoria para el actual n
   }
-  delete[] M; // Liberamos la memoria del arreglo de M = 2**28
+  //delete[] M; // Liberamos la memoria del arreglo de M = 2**28
 
   // Primero printeamos los "heads" del archivo csv
   cout << "SP_t1,SP_t2,SP_t3,SP_t4,SP_t5,SP_Mean,SP_SD,RB_t1,RB_t2,RB_t3,RB_t4,RB_t5,RB_Mean,RB_SD" << "\n";
